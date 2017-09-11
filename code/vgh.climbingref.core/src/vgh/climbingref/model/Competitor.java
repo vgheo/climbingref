@@ -1,5 +1,8 @@
 package vgh.climbingref.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Competitor {
 
 	public String getId() {

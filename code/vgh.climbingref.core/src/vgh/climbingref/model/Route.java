@@ -1,5 +1,8 @@
 package vgh.climbingref.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Route {
 
 	public String getId() {

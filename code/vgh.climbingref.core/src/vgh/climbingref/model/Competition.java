@@ -3,6 +3,10 @@ package vgh.climbingref.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+
+
+@Entity
 public class Competition {
 	
 	public String getName() {
