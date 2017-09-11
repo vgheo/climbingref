@@ -1,0 +1,12 @@
+rootProject.name = 'climbingref'
+
+include 'vgh.climbingref.core'
+
+
+//we check if the modules have gradle configuration files
+rootProject.children.each { project ->
+    project.buildFileName = "build.gradle"
+    assert project.projectDir.isDirectory()
+    assert project.buildFile.exists()
+    assert project.buildFile.isFile()
+}

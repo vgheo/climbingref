@@ -1,0 +1,119 @@
+
+//gradle build -Dreceipt
+
+allprojects {
+    version = '1.0'
+    group = 'vgh.climbingref'
+
+	ext {
+		//spring libs
+		springVersion = '4.3.3.RELEASE'
+		springJpaVersion = '1.10.3.RELEASE'
+		springSecurityVersion = '4.1.3.RELEASE'
+		aspectjVersion = '1.8.4'
+		yamlVersion = '1.17'
+		
+		//testing libs
+        mockitoVersion = '2.0.2-beta'
+        junitVersion = '4.13-SNAPSHOT'
+        
+        //persistency library
+        hibernateVersion = '5.2.1.Final'
+
+        //in memory test database
+        h2Version = '1.4.192'
+        
+        //logging libs
+        logbackVersion = '1.1.7'
+        slf4jVersion = '1.7.21'
+
+
+		tests = [
+                junit       : "junit:junit:$junitVersion",
+                mockito     : "org.mockito:mockito-all:$mockitoVersion",
+                easymock    : "org.easymock:easymock:3.4",
+                jmock       : "org.jmock:jmock:2.8.2",
+                hamcrestCore: "org.hamcrest:hamcrest-core:1.3",
+                hamcrestLib : "org.hamcrest:hamcrest-library:1.3"
+        ]
+
+        log = [
+                slf4jApi  : "org.slf4j:slf4j-api:$slf4jVersion",
+                slf4jJcl  : "org.slf4j:jcl-over-slf4j:$slf4jVersion",
+                logback   : "ch.qos.logback:logback-classic:$logbackVersion",
+                slf4jLog4j: "org.slf4j:log4j-over-slf4j:$slf4jVersion"
+        ]
+        
+        hibernate = [
+                validator: "org.hibernate:hibernate-validator:5.1.3.Final",
+                ehcache  : "org.hibernate:hibernate-ehcache:$hibernateVersion",
+                em       : "org.hibernate:hibernate-entitymanager:$hibernateVersion",
+                core     : "org.hibernate:hibernate-core:$hibernateVersion"
+        ]
+        
+        spring = [
+                data           : "org.springframework.data:spring-data-jpa:$springJpaVersion",
+                //mongo          : "org.springframework.data:spring-data-mongodb:1.9.2.RELEASE",
+                test           : "org.springframework:spring-test:$springVersion",
+                //webmvc         : "org.springframework:spring-webmvc:$springVersion",
+                //aop            : "org.springframework:spring-aop:$springVersion",
+                jdbc           : "org.springframework:spring-jdbc:$springVersion",
+                //jms            : "org.springframework:spring-jms:$springVersion",
+                orm            : "org.springframework:spring-orm:$springVersion",
+                //mvcPortlet     : "org.springframework:spring-webmvc-portlet:$springVersion",
+                contextSupport : "org.springframework:spring-context-support:$springVersion",
+                //securityWeb    : "org.springframework.security:spring-security-web:$springSecurityVersion",
+                //securityTaglibs: "org.springframework.security:spring-security-taglibs:$springSecurityVersion",
+                //securityConfig : "org.springframework.security:spring-security-config:$springSecurityVersion",
+                //hateoas        : "org.springframework.hateoas:spring-hateoas:0.17.0.RELEASE",
+                plugin         : "org.springframework.plugin:spring-plugin-core:1.1.0.RELEASE"
+        ]
+	}
+}
+
+subprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.8
+    // Make sure transitive project dependencies are resolved
+    configurations.compile.transitive = true
+
+    configurations {
+        all*.exclude group: "commons-logging", module: "commons-logging"
+    }
+
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "http://repo.spring.io/snapshot/" }
+        maven { url "http://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        compile log.slf4jApi, log.slf4jJcl, log.logback, log.slf4jLog4j
+        testCompile tests.mockito, tests.junit
+    }
+}
+   
+task allDeps << {
+    description 'Task used to display dependencies for all modules in the project'
+    subprojects.each { p ->
+        println()
+        println " $p.name ".center(60, '*')
+        println()
+        p.configurations.all.findAll { !it.allDependencies.empty }.each { c ->
+            println " ${c.name} ".center(60, '-')
+            c.allDependencies.each { dep ->
+                println "$dep.group:$dep.name:$dep.version"
+            }
+            println "-" * 60
+        }
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.0-rc-2'
+}
+

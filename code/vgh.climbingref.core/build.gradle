@@ -1,0 +1,5 @@
+dependencies {
+    compile log.slf4jApi, log.slf4jJcl, log.logback, log.slf4jLog4j,
+            hibernate.ehcache, hibernate.em, hibernate.core, hibernate.validator,
+            spring.jdbc, spring.orm, spring.contextSupport, spring.data
+}
