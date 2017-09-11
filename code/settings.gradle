@@ -1,4 +1,4 @@
-rootProject.name = 'climbingref'
+rootProject.name = 'vgh.climbingref'
 
 include 'vgh.climbingref.core'
 
