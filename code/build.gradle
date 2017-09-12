@@ -95,20 +95,22 @@ subprojects {
         testCompile tests.mockito, tests.junit
     }
 }
-   
-task allDeps << {
-    description 'Task used to display dependencies for all modules in the project'
-    subprojects.each { p ->
-        println()
-        println " $p.name ".center(60, '*')
-        println()
-        p.configurations.all.findAll { !it.allDependencies.empty }.each { c ->
-            println " ${c.name} ".center(60, '-')
-            c.allDependencies.each { dep ->
-                println "$dep.group:$dep.name:$dep.version"
-            }
-            println "-" * 60
-        }
+
+task allDeps {
+	doLast {
+	    description 'Task used to display dependencies for all modules in the project'
+	    subprojects.each { p ->
+	        println()
+	        println " $p.name ".center(60, '*')
+	        println()
+	        p.configurations.all.findAll { !it.allDependencies.empty }.each { c ->
+	            println " ${c.name} ".center(60, '-')
+	            c.allDependencies.each { dep ->
+	                println "$dep.group:$dep.name:$dep.version"
+	            }
+	            println "-" * 60
+	        }
+		}
     }
 }
 
