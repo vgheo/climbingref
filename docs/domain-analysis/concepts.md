@@ -51,7 +51,7 @@ Variant: No referees. Attempts are valid by default.
 A path on a climbing wall set up for climbing by competitors.
 
 - id:String
-- pastAttempts : Attempt[*]
+- attempts : Attempt[*] {ordered, composes}
 - activeAttempt : Attempt[0..1]
 - waitingQueue : WaitingQueue
 
@@ -67,11 +67,12 @@ An attempt has an outcome of AttemptOutcome.
 - startTime
 - endTime
 
-Constraint: At any moment, at most one Attempt can be active for a given Route.
-Constraint: At any moment, at most one Attempt can be active for a given Competitor
+
+Constraints
+C1: At any moment, at most one Attempt can be active for a given Route.
+C2: At any moment, at most one Attempt can be active for a given Competitor
 	 - physical; funny
 
-VariationPoint: 	 
 
 ## AttemptOutcome
 - Unknown - outcome not yet known
